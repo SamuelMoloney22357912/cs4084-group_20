@@ -23,7 +23,7 @@ public class splashScreen extends AppCompatActivity {
             return insets;
         });
 
-//        This delays the loading screen for 5 seconds giving the effect that it is loading
+//        This delays the loading screen for 3 seconds giving the effect that it is loading
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -31,6 +31,6 @@ public class splashScreen extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },5000);
+        },3000);
     }
 }
