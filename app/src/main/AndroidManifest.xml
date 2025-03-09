@@ -13,20 +13,27 @@
         android:theme="@style/Theme.HelloWorld"
         tools:targetApi="31">
         <activity
+            android:name=".ToDoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".To_do_page"
+            android:exported="false" />
+        <activity
             android:name=".splashScreen"
             android:exported="true">
-<!--Shows splash screen as the first screen when app is opened-->
+
+            <!-- Shows splash screen as the first screen when app is opened -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".MainActivity"
             android:exported="false">
-<!--repush-->
+
+            <!-- repush -->
         </activity>
     </application>
 
