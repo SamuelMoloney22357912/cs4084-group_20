@@ -46,6 +46,24 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             startActivity(intent);
         });
 
+        Button toDoButton = findViewById(R.id.toDoPageButton);
+        toDoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,ToDoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button timerButton = findViewById(R.id.timerPageButton);
+        timerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,timerActivity.class);
+                startActivity(intent);
+            }
+        });
+
         initWidgets();
 
         selectedDate = LocalDate.now();

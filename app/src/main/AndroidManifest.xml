@@ -3,29 +3,37 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
-        android:theme="@style/Theme.HelloWorld"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/Theme.HelloWorld"
         tools:targetApi="31">
-
+        <activity
+            android:name=".timerActivity"
+            android:exported="false" />
         <activity
             android:name=".splashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".CalendarActivity"
             android:exported="true" />
+        <activity
+            android:name=".ToDoActivity"
+            android:exported="true" />
+
+<!--        <activity-->
+<!--            android:name=".timerActivity"-->
+<!--            android:exported="true" />-->
 
     </application>
 
