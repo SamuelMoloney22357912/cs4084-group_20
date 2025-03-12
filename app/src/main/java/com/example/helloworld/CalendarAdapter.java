@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
-    private final ArrayList<String> daysOfMonth;
+    private ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
 
     public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
-        this.daysOfMonth = daysOfMonth;
+        this.daysOfMonth = new ArrayList<>(daysOfMonth);
         this.onItemListener = onItemListener;
     }
 
@@ -42,6 +42,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         return daysOfMonth.size();
     }
 
+    public void updateData(ArrayList<String> newDays) {
+        this.daysOfMonth = new ArrayList<>(newDays);
+        notifyDataSetChanged();
+    }
+
     public interface OnItemListener {
         void onItemClick(int position, String dayText);
     }
@@ -59,7 +64,10 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         @Override
         public void onClick(View view) {
-            onItemListener.onItemClick(getAdapterPosition(), (String) dayOfMonth.getText());
+            String dayText = dayOfMonth.getText().toString();
+            if (!dayText.isEmpty()) {
+                onItemListener.onItemClick(getAdapterPosition(), dayText);
+            }
         }
     }
 }
