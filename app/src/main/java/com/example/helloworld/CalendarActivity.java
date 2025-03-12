@@ -2,12 +2,13 @@ package com.example.helloworld;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +32,12 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calender_activity);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Calendar"); // Set a title if needed
+        }
+
         monthYearTextView = findViewById(R.id.monthYearTextView);
         recyclerViewCalendar = findViewById(R.id.recyclerViewCalendar);
         Button previousMonthButton = findViewById(R.id.previousMonthButton);
@@ -48,6 +55,15 @@ public class CalendarActivity extends AppCompatActivity {
             selectedDate = selectedDate.plusMonths(1);
             updateCalendar();
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void updateCalendar() {
@@ -76,13 +92,13 @@ public class CalendarActivity extends AppCompatActivity {
 
         int daysInMonth = yearMonth.lengthOfMonth();
         LocalDate firstOfMonth = date.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue(); // Monday = 1, Sunday = 7
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
 
-        dayOfWeek = (dayOfWeek % 7);  // Convert Monday-based index to Sunday-based (0-6)
+        dayOfWeek = (dayOfWeek % 7);
 
-        for (int i = 0; i < 42; i++) { // 6 rows of 7 days each
+        for (int i = 0; i < 42; i++) {
             if (i < dayOfWeek || i >= daysInMonth + dayOfWeek) {
-                daysInMonthArray.add(""); // Empty slots
+                daysInMonthArray.add("");
             } else {
                 daysInMonthArray.add(String.valueOf(i - dayOfWeek + 1));
             }
