@@ -15,13 +15,12 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     private ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
-    private final String currentDate;  // Store today's date for comparison
+    private LocalDate selectedDate;  // Store the selectedDate for comparison
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, LocalDate selectedDate) {
         this.daysOfMonth = new ArrayList<>(daysOfMonth);
         this.onItemListener = onItemListener;
-        // Get today's date in the same format as the day text (e.g., "15")
-        this.currentDate = String.valueOf(LocalDate.now().getDayOfMonth());
+        this.selectedDate = selectedDate;  // Store selectedDate for later comparison
     }
 
     @NonNull
@@ -35,16 +34,20 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         String dayText = daysOfMonth.get(position);
+
         if (!dayText.isEmpty()) {
             holder.dayOfMonth.setText(dayText);
 
-            if (dayText.equals(currentDate)) {
+            if (dayText.equals(String.valueOf(selectedDate.getDayOfMonth()))
+                    && selectedDate.getMonthValue() == LocalDate.now().getMonthValue()
+                    && selectedDate.getYear() == LocalDate.now().getYear()) {
                 int highlightColor = ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_purple);
                 holder.dayOfMonth.setBackgroundColor(highlightColor);
                 int highlightNumColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.white);
                 holder.dayOfMonth.setTextColor(highlightNumColor);
+
             } else {
-                holder.dayOfMonth.setBackgroundResource(0);
+                holder.dayOfMonth.setBackgroundResource(0); // Remove highlight
             }
 
             holder.dayOfMonth.setVisibility(View.VISIBLE);
@@ -59,8 +62,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         return daysOfMonth.size();
     }
 
-    public void updateData(ArrayList<String> newDays) {
+    public void updateData(ArrayList<String> newDays, LocalDate newSelectedDate) {
         this.daysOfMonth = new ArrayList<>(newDays);
+        this.selectedDate = newSelectedDate;  // Update the selectedDate
         notifyDataSetChanged();
     }
 

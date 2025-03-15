@@ -78,13 +78,15 @@ public class CalendarActivity extends AppCompatActivity {
                     String message = "Selected Date: " + dayText + " " + monthYear;
                     Toast.makeText(this, message, Toast.LENGTH_LONG).show();
                 }
-            });
+            }, selectedDate);  // Pass selectedDate to the adapter
+
             recyclerViewCalendar.setLayoutManager(new GridLayoutManager(this, 7));
             recyclerViewCalendar.setAdapter(calendarAdapter);
         } else {
-            calendarAdapter.updateData(daysOfMonth);
+            calendarAdapter.updateData(daysOfMonth, selectedDate);  // Pass selectedDate to update data
         }
     }
+
 
     private ArrayList<String> daysInMonthArray(LocalDate date) {
         ArrayList<String> daysInMonthArray = new ArrayList<>();
