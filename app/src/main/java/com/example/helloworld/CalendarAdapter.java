@@ -5,17 +5,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
-    private final ArrayList<String> daysOfMonth;
+    private ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
+    private LocalDate selectedDate;  // Store the selectedDate for comparison
 
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
-        this.daysOfMonth = daysOfMonth;
+    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, LocalDate selectedDate) {
+        this.daysOfMonth = new ArrayList<>(daysOfMonth);
         this.onItemListener = onItemListener;
+        this.selectedDate = selectedDate;  // Store selectedDate for later comparison
     }
 
     @NonNull
@@ -29,17 +34,38 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         String dayText = daysOfMonth.get(position);
+
         if (!dayText.isEmpty()) {
             holder.dayOfMonth.setText(dayText);
+
+            if (dayText.equals(String.valueOf(selectedDate.getDayOfMonth()))
+                    && selectedDate.getMonthValue() == LocalDate.now().getMonthValue()
+                    && selectedDate.getYear() == LocalDate.now().getYear()) {
+                int highlightColor = ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_purple);
+                holder.dayOfMonth.setBackgroundColor(highlightColor);
+                int highlightNumColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.white);
+                holder.dayOfMonth.setTextColor(highlightNumColor);
+
+            } else {
+                holder.dayOfMonth.setBackgroundResource(0); // Remove highlight
+            }
+
             holder.dayOfMonth.setVisibility(View.VISIBLE);
         } else {
             holder.dayOfMonth.setVisibility(View.INVISIBLE);
         }
     }
 
+
     @Override
     public int getItemCount() {
         return daysOfMonth.size();
+    }
+
+    public void updateData(ArrayList<String> newDays, LocalDate newSelectedDate) {
+        this.daysOfMonth = new ArrayList<>(newDays);
+        this.selectedDate = newSelectedDate;  // Update the selectedDate
+        notifyDataSetChanged();
     }
 
     public interface OnItemListener {
@@ -59,7 +85,10 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
         @Override
         public void onClick(View view) {
-            onItemListener.onItemClick(getAdapterPosition(), (String) dayOfMonth.getText());
+            String dayText = dayOfMonth.getText().toString();
+            if (!dayText.isEmpty()) {
+                onItemListener.onItemClick(getAdapterPosition(), dayText);
+            }
         }
     }
 }

@@ -1,47 +1,115 @@
 package com.example.helloworld;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class CalendarActivity extends AppCompatActivity {
 
-    private RecyclerView calendarRecyclerView;
-    private ArrayList<String> daysOfMonth = new ArrayList<>();
-    private CalendarAdapter.OnItemListener onItemListener;
+    private TextView monthYearTextView;
+    private RecyclerView recyclerViewCalendar;
+    private CalendarAdapter calendarAdapter;
+    private LocalDate selectedDate;
+    private ArrayList<String> daysOfMonth;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calender_activity);
 
-        calendarRecyclerView = findViewById(R.id.recyclerViewCalendar);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 7); // 7 columns for each day of the week
-        calendarRecyclerView.setLayoutManager(gridLayoutManager);
-
-        LocalDate currentDate = LocalDate.now();
-        int daysInMonth = currentDate.lengthOfMonth();
-        int firstDayOfMonth = currentDate.withDayOfMonth(1).getDayOfWeek().getValue();
-
-        for (int i = 1; i < firstDayOfMonth; i++) {
-            daysOfMonth.add(""); // Empty space
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Calendar");
         }
 
-        for (int i = 1; i <= daysInMonth; i++) {
-            daysOfMonth.add(String.valueOf(i));
-        }
+        monthYearTextView = findViewById(R.id.monthYearTextView);
+        recyclerViewCalendar = findViewById(R.id.recyclerViewCalendar);
+        Button previousMonthButton = findViewById(R.id.previousMonthButton);
+        Button nextMonthButton = findViewById(R.id.nextMonthButton);
 
-        onItemListener = new CalendarAdapter.OnItemListener() {
-            @Override
-            public void onItemClick(int position, String dayText) {
+        selectedDate = LocalDate.now();
+        updateCalendar();
+
+        previousMonthButton.setOnClickListener(v -> {
+            selectedDate = selectedDate.minusMonths(1);
+            updateCalendar();
+        });
+
+        nextMonthButton.setOnClickListener(v -> {
+            selectedDate = selectedDate.plusMonths(1);
+            updateCalendar();
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void updateCalendar() {
+        String monthYear = monthYearFromDate(selectedDate);
+        monthYearTextView.setText(monthYear);
+
+        daysOfMonth = daysInMonthArray(selectedDate);
+
+        if (calendarAdapter == null) {
+            calendarAdapter = new CalendarAdapter(daysOfMonth, (position, dayText) -> {
+                if (!dayText.isEmpty()) {
+                    String message = "Selected Date: " + dayText + " " + monthYear;
+                    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+                }
+            }, selectedDate);  // Pass selectedDate to the adapter
+
+            recyclerViewCalendar.setLayoutManager(new GridLayoutManager(this, 7));
+            recyclerViewCalendar.setAdapter(calendarAdapter);
+        } else {
+            calendarAdapter.updateData(daysOfMonth, selectedDate);  // Pass selectedDate to update data
+        }
+    }
+
+
+    private ArrayList<String> daysInMonthArray(LocalDate date) {
+        ArrayList<String> daysInMonthArray = new ArrayList<>();
+        YearMonth yearMonth = YearMonth.from(date);
+
+        int daysInMonth = yearMonth.lengthOfMonth();
+        LocalDate firstOfMonth = date.withDayOfMonth(1);
+        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
+
+        dayOfWeek = (dayOfWeek % 7);
+
+        for (int i = 0; i < 42; i++) {
+            if (i < dayOfWeek || i >= daysInMonth + dayOfWeek) {
+                daysInMonthArray.add("");
+            } else {
+                daysInMonthArray.add(String.valueOf(i - dayOfWeek + 1));
             }
-        };
+        }
+        return daysInMonthArray;
+    }
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysOfMonth, onItemListener);
-        calendarRecyclerView.setAdapter(calendarAdapter);
+    private String monthYearFromDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
+        return date.format(formatter);
     }
 }

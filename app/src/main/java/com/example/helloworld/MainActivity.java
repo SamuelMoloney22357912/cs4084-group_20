@@ -2,37 +2,40 @@ package com.example.helloworld;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.content.Intent;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+public class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
-
-    private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
+    private TextView dateTextView, timeTextView;
+    private final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dateTextView = findViewById(R.id.xml_text_date);
+        timeTextView = findViewById(R.id.xml_text_time);
+
+        // Set initial date and time
+        updateDateTime();
+
+        // Start updating time every second
+        handler.post(timeUpdater);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -41,94 +44,48 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         });
 
         Button calendarButton = findViewById(R.id.calendarButton);
+        Button toDoButton = findViewById(R.id.toDoPageButton);
+        Button timerButton = findViewById(R.id.timerPageButton);
+
         calendarButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
             startActivity(intent);
         });
 
-        Button toDoButton = findViewById(R.id.toDoPageButton);
-        toDoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,ToDoActivity.class);
-                startActivity(intent);
-            }
+        toDoButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ToDoActivity.class);
+            startActivity(intent);
         });
 
-        Button timerButton = findViewById(R.id.timerPageButton);
-        timerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this,timerActivity.class);
-                startActivity(intent);
-            }
-        });
+        //timerButton.setOnClickListener(v -> {
+            //Intent intent = new Intent(MainActivity.this, TimerActivity.class);
+            //startActivity(intent);
+        //});
+    }
+    private void updateDateTime() {
+        Calendar calendar = Calendar.getInstance();
 
-        initWidgets();
+        // Format Date and Time
+        String dateFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault()).format(calendar.getTime());
+        String timeFormat = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault()).format(calendar.getTime());
 
-        selectedDate = LocalDate.now();
-        setMonthView();
+        // Update TextViews
+        dateTextView.setText(dateFormat);
+        timeTextView.setText(timeFormat);
     }
 
-    private void initWidgets() {
-        calendarRecyclerView = findViewById(R.id.recyclerViewCalendar);  // Correct ID
-        monthYearText = findViewById(R.id.monthYearTV);
-    }
-
-
-    private void setMonthView() {
-        if (monthYearText != null) {
-            monthYearText.setText(monthYearFromDate(selectedDate));
-        } else {
-            Log.e("MainActivity", "monthYearText is null");
+    // Runnable to update time every second
+    private final Runnable timeUpdater = new Runnable() {
+        @Override
+        public void run() {
+            updateDateTime();
+            handler.postDelayed(this, 1000); // Update every second
         }
-
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
-
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 7); // 7 columns for each week
-        calendarRecyclerView.setLayoutManager(layoutManager);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-    }
-
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> daysInMonthArray = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(date);
-
-        int daysInMonth = yearMonth.lengthOfMonth();
-        LocalDate firstOfMonth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMonth.getDayOfWeek().getValue();
-
-        for (int i = 1; i <= 42; i++) { // 6 weeks in a month (7 days * 6 = 42 slots)
-            if (i <= dayOfWeek || i > daysInMonth + dayOfWeek) {
-                daysInMonthArray.add(""); // Empty slots
-            } else {
-                daysInMonthArray.add(String.valueOf(i - dayOfWeek));
-            }
-        }
-        return daysInMonthArray;
-    }
-
-    private String monthYearFromDate(LocalDate date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        return date.format(formatter);
-    }
-
-    public void previosMonthAction(View view) {
-        selectedDate = selectedDate.minusMonths(1);
-        setMonthView();
-    }
-
-    public void nextMonthAction(View view) {
-        selectedDate = selectedDate.plusMonths(1);
-        setMonthView();
-    }
+    };
 
     @Override
-    public void onItemClick(int position, String dayText) {
-        if (!dayText.equals("")) {
-            String message = "Selected Date: " + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-        }
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(timeUpdater); // Stop updates when activity is destroyed
     }
 }
