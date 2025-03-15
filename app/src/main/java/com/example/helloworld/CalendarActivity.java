@@ -35,7 +35,7 @@ public class CalendarActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Calendar"); // Set a title if needed
+            actionBar.setTitle("Calendar");
         }
 
         monthYearTextView = findViewById(R.id.monthYearTextView);

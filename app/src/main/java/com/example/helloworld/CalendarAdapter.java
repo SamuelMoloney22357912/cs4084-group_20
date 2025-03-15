@@ -5,17 +5,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
     private ArrayList<String> daysOfMonth;
     private final OnItemListener onItemListener;
+    private final String currentDate;  // Store today's date for comparison
 
     public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
         this.daysOfMonth = new ArrayList<>(daysOfMonth);
         this.onItemListener = onItemListener;
+        // Get today's date in the same format as the day text (e.g., "15")
+        this.currentDate = String.valueOf(LocalDate.now().getDayOfMonth());
     }
 
     @NonNull
@@ -31,11 +37,22 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         String dayText = daysOfMonth.get(position);
         if (!dayText.isEmpty()) {
             holder.dayOfMonth.setText(dayText);
+
+            if (dayText.equals(currentDate)) {
+                int highlightColor = ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_purple);
+                holder.dayOfMonth.setBackgroundColor(highlightColor);
+                int highlightNumColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.white);
+                holder.dayOfMonth.setTextColor(highlightNumColor);
+            } else {
+                holder.dayOfMonth.setBackgroundResource(0);
+            }
+
             holder.dayOfMonth.setVisibility(View.VISIBLE);
         } else {
             holder.dayOfMonth.setVisibility(View.INVISIBLE);
         }
     }
+
 
     @Override
     public int getItemCount() {
