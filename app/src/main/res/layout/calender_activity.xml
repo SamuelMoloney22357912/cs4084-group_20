@@ -10,51 +10,54 @@
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="0" />
 
-    <!-- Month Navigation (Previous, Current Month, Next) -->
+
+
+    <!-- Weekday Header (SUN, MON, TUE, WED, THU, FRI, SAT) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <!-- Previous Month Button -->
         <Button
             android:id="@+id/previousMonthButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="←"
-            android:textSize="18sp"
             android:backgroundTint="@android:color/holo_purple"
-            android:textColor="@android:color/white"/>
+            android:text="←"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <!-- Current Month Year TextView -->
         <TextView
             android:id="@+id/monthYearTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="March 2025"
-            android:textSize="20sp"
-            android:textColor="@android:color/black"
-            android:padding="10dp"
-            android:textStyle="bold"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"/>
+            android:layout_marginEnd="20dp"
+            android:padding="10dp"
+            android:text="March 2025"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <!-- Next Month Button -->
+
         <Button
             android:id="@+id/nextMonthButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="→"
-            android:textSize="18sp"
             android:backgroundTint="@android:color/holo_purple"
-            android:textColor="@android:color/white"/>
+            android:text="→"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
     </LinearLayout>
 
-    <!-- Weekday Header (SUN, MON, TUE, WED, THU, FRI, SAT) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +72,7 @@
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
@@ -79,7 +82,7 @@
             android:textAlignment="center"
             android:textColor="@android:color/black"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
@@ -132,7 +135,8 @@
             android:textStyle="bold"/>
     </LinearLayout>
 
-    <!-- RecyclerView to Display Calendar Days -->
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCalendar"
         android:layout_width="match_parent"
@@ -141,10 +145,34 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp" />
 
-    <!-- Pushes content up from the bottom -->
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/viewWeekly"
+            android:layout_width="123dp"
+            android:layout_height="63dp"
+            android:backgroundTint="@android:color/holo_purple"
+            android:gravity="center"
+            android:text="View Weekly Calendar"
+            android:textColor="@android:color/white"
+            android:textSize="12dp"
+            android:layout_marginEnd="10dp" />
+
+        <Button
+            android:id="@+id/viewDaily"
+            android:layout_width="123dp"
+            android:layout_height="63dp"
+            android:backgroundTint="@android:color/holo_purple"
+            android:gravity="center"
+            android:text="View Daily Schedule"
+            android:textColor="@android:color/white"
+            android:textSize="12dp" />
+
+    </LinearLayout>
 </LinearLayout>
