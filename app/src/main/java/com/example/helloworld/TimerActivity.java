@@ -1,7 +1,4 @@
-
-
-
-        package com.example.helloworld;
+package com.example.helloworld;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,10 +14,7 @@ import java.util.TimerTask;
 
 public class TimerActivity extends AppCompatActivity {
     private TextView timerTextView;
-    private TextView timerText;
-    private Button stopStartButton;
-    private Button startButton;
-    private Button stopButton;
+    private Button startStopButton;
     private Button resetButton;
 
     private Timer timer;
@@ -31,49 +25,50 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timer); // Use the correct layout file
+        setContentView(R.layout.activity_timer);
 
         timerTextView = findViewById(R.id.timerTextView);
-        startButton = findViewById(R.id.startButton);
-        stopButton = findViewById(R.id.stopButton);
+        startStopButton = findViewById(R.id.startStopButton);
         resetButton = findViewById(R.id.resetButton);
 
         timer = new Timer();
 
         // Set up button listeners
-        stopStartButton.setOnClickListener(this::startStopTapped);
+        startStopButton.setOnClickListener(this::startStopTapped);
         resetButton.setOnClickListener(this::resetTapped);
     }
 
     public void resetTapped(View view) {
-        AlertDialog.Builder resetAlert = new AlertDialog.Builder(this);
-        resetAlert.setTitle("Reset Timer");
-        resetAlert.setMessage("Are you sure you want to reset the timer?");
-        resetAlert.setPositiveButton("Reset", (dialogInterface, i) -> {
-            if (timerTask != null) {
-                timerTask.cancel();
-                setButtonUI("START", R.color.black);
-                time = 0.0;
-                timerStarted = false;
-                timerText.setText(formatTime(0, 0, 0));
-            }
-        });
+        if (time > 0) {  // Only reset if time is greater than zero
+            AlertDialog.Builder resetAlert = new AlertDialog.Builder(this);
+            resetAlert.setTitle("Reset Timer");
+            resetAlert.setMessage("Are you sure you want to reset the timer?");
+            resetAlert.setPositiveButton("Reset", (dialogInterface, i) -> {
+                if (timerTask != null) {
+                    timerTask.cancel();
+                    setButtonUI("Start", R.color.black);
+                    time = 0.0;
+                    timerStarted = false;
+                    timerTextView.setText(formatTime(0, 0, 0));
+                }
+            });
 
-        resetAlert.setNeutralButton("Cancel", (dialogInterface, i) -> {
-            // Do nothing
-        });
+            resetAlert.setNeutralButton("Cancel", (dialogInterface, i) -> {
+                // Do nothing
+            });
 
-        resetAlert.show();
+            resetAlert.show();
+        }
     }
 
     public void startStopTapped(View view) {
         if (!timerStarted) {
             timerStarted = true;
-            setButtonUI("STOP", R.color.blue);
+            setButtonUI("Pause", R.color.blue);
             startTimer();
         } else {
             timerStarted = false;
-            setButtonUI("START", R.color.colorSecondary);
+            setButtonUI("Start", R.color.black);
 
             if (timerTask != null) {
                 timerTask.cancel();
@@ -82,8 +77,8 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void setButtonUI(String text, int color) {
-        stopStartButton.setText(text);
-        stopStartButton.setTextColor(ContextCompat.getColor(this, color));
+        startStopButton.setText(text);
+        startStopButton.setTextColor(ContextCompat.getColor(this, color));
     }
 
     private void startTimer() {
@@ -92,7 +87,7 @@ public class TimerActivity extends AppCompatActivity {
             public void run() {
                 runOnUiThread(() -> {
                     time++;
-                    timerText.setText(getTimerText());
+                    timerTextView.setText(getTimerText());
                 });
             }
         };
@@ -113,5 +108,3 @@ public class TimerActivity extends AppCompatActivity {
         return String.format("%02d", hours) + " : " + String.format("%02d", minutes) + " : " + String.format("%02d", seconds);
     }
 }
-
-
