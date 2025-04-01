@@ -57,10 +57,10 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        //timerButton.setOnClickListener(v -> {
-            //Intent intent = new Intent(MainActivity.this, TimerActivity.class);
-            //startActivity(intent);
-        //});
+        timerButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, TimerActivity.class);
+            startActivity(intent);
+        });
     }
     private void updateDateTime() {
         Calendar calendar = Calendar.getInstance();

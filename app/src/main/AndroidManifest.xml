@@ -9,9 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HelloWorld"
         tools:targetApi="31">
-        <activity
-            android:name=".timerActivity"
-            android:exported="false" />
+
         <activity
             android:name=".splashScreen"
             android:exported="true">
@@ -29,6 +27,10 @@
             android:exported="true" />
         <activity
             android:name=".ToDoActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".TimerActivity"
             android:exported="true" />
 
 <!--        <activity-->
