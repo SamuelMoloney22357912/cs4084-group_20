@@ -57,9 +57,9 @@ public class toDoRViewTHelper extends ItemTouchHelper.SimpleCallback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
                 .addSwipeLeftBackgroundColor(ContextCompat.getColor(adapter.getContext(), R.color.red))
-                .addSwipeLeftActionIcon(R.drawable.tempdelete)
+                .addSwipeLeftActionIcon(android.R.drawable.ic_menu_delete)
                 .addSwipeRightBackgroundColor(ContextCompat.getColor(adapter.getContext(), R.color.green))
-                .addSwipeRightActionIcon(R.drawable.tempedit)
+                .addSwipeRightActionIcon(android.R.drawable.ic_menu_edit)
                 .create()
                 .decorate();
 

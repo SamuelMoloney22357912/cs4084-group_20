@@ -10,5 +10,7 @@
     <color name="green">#0BE913</color>
     <color name="blue">#0000FF</color> <!-- Standard Blue color -->
     <color name="grey">#808080</color> <!-- You can define other colors like grey if needed -->
+    <color name="babyblue">#03A9F4</color> <!-- Standard Blue color -->
+
 
 </resources>

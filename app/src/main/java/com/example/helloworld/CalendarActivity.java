@@ -30,13 +30,9 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.calender_activity);
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Calendar");
-        }
 
         monthYearTextView = findViewById(R.id.monthYearTextView);
         recyclerViewCalendar = findViewById(R.id.recyclerViewCalendar);
