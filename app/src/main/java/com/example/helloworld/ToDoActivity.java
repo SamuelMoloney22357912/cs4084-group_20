@@ -34,6 +34,8 @@ public class ToDoActivity extends AppCompatActivity implements ToDoOnDialogClose
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_to_do);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

@@ -33,6 +33,7 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_timer);
 
         timerTextView = findViewById(R.id.timerTextView);
