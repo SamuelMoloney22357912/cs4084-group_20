@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Button calendarButton = findViewById(R.id.calendarButton);
         Button toDoButton = findViewById(R.id.toDoPageButton);
         Button timerButton = findViewById(R.id.timerPageButton);
+        Button timetableButton = findViewById(R.id.timetablePageButton);
 
         calendarButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
@@ -59,6 +60,11 @@ public class MainActivity extends AppCompatActivity {
 
         timerButton.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, TimerActivity.class);
+            startActivity(intent);
+        });
+
+        timetableButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, timetableActivity.class);
             startActivity(intent);
         });
     }
