@@ -12,5 +12,13 @@
     <color name="grey">#808080</color> <!-- You can define other colors like grey if needed -->
     <color name="babyblue">#03A9F4</color> <!-- Standard Blue color -->
 
+    <color name="rose">#facedb</color>
+
+
+    <color name="orange">#feda9c</color>
+
+    <color name="purple">#eedaff</color>
+    <color name="yellow">#fffbb0</color>
+
 
 </resources>

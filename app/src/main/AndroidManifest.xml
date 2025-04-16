@@ -33,6 +33,15 @@
             android:name=".TimerActivity"
             android:exported="true" />
 
+        <activity
+            android:name=".timetableActivity"
+            android:exported="true" />
+
+
+        <activity
+            android:name=".timetableTaskEdit"
+            android:exported="false" />
+
 <!--        <activity-->
 <!--            android:name=".timerActivity"-->
 <!--            android:exported="true" />-->

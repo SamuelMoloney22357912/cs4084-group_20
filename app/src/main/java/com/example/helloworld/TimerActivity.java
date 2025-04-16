@@ -16,6 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class TimerActivity extends AppCompatActivity {
+
     private TextView timerTextView;
     private EditText minutesInput;
     private Button startButton;
@@ -91,6 +92,8 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void startTimer() {
+
+
         timerStarted = true;
         resetButton.setEnabled(false);
         backButton.setEnabled(false);
@@ -105,6 +108,10 @@ public class TimerActivity extends AppCompatActivity {
                         timerTask.cancel();
                         timerStarted = false;
                         timerTextView.setText("Time Finished. Congratulations!");
+
+
+                        timerTextView.setText("Time Finished. Congratulations!");
+
                         timerTextView.setTextColor(ContextCompat.getColor(TimerActivity.this, android.R.color.holo_red_dark));
                         resetButton.setEnabled(true);
                         backButton.setEnabled(true);
@@ -134,6 +141,7 @@ public class TimerActivity extends AppCompatActivity {
         }
     }
 
+
     private void resetTimer() {
         timerStarted = false;
         time = 0;
@@ -141,4 +149,10 @@ public class TimerActivity extends AppCompatActivity {
         timerTextView.setTextColor(ContextCompat.getColor(this, android.R.color.black));
         resetButton.setEnabled(false);
     }
+
+
+
+
+
+
 }

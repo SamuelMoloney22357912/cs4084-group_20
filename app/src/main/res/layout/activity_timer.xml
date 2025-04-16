@@ -3,76 +3,82 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="20dp"
-    android:background="@android:color/white">
-
+    android:padding="24dp"
+    android:background="@drawable/gradient_background">
 
     <EditText
         android:id="@+id/minutesInput"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:hint="Enter minutes"
         android:inputType="number"
-        android:textSize="24sp"
-        android:layout_marginBottom="20dp"
+        android:textSize="20sp"
         android:gravity="center"
-        android:textColor="@android:color/black" />
-
+        android:padding="12dp"
+        android:background="@drawable/rounded_edittext"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:text="00:00:00"
         android:textColor="@android:color/black"
         android:textSize="48sp"
-        android:textStyle="bold" />
-
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
 
     <TextView
         android:id="@+id/finishMessage"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Time Finished! Congratulations!"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="32sp"
+        android:text="🎉 Time Finished! Well done! 🎉"
+        android:textColor="#6A1B9A"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
         android:visibility="gone"
-        android:textStyle="bold" />
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp" />
+
 
 
     <Button
         android:id="@+id/startButton"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:text="Start"
-        android:layout_margin="10dp" />
-
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/stopButton"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:text="Stop (Hold)"
-        android:layout_margin="10dp" />
-
-
+        android:background="@drawable/rounded_button_orange"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:text="Reset"
-        android:layout_margin="10dp"
-        android:enabled="false" />
-
+        android:enabled="false"
+        android:background="@drawable/rounded_button_grey"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/backButton"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:text="Back"
-        android:layout_margin="10dp" />
-
-
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
 </LinearLayout>
