@@ -26,6 +26,7 @@ public class timetableTaskEdit extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_timetable_taskedit);
 
         EditText task = findViewById(R.id.task);
