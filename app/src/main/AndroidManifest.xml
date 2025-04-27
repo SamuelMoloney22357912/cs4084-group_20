@@ -15,16 +15,18 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
         <activity
             android:name=".CalendarActivity"
             android:exported="true" />
+
         <activity
             android:name=".ToDoActivity"
             android:exported="true" />
@@ -37,14 +39,14 @@
             android:name=".timetableActivity"
             android:exported="true" />
 
-
         <activity
             android:name=".timetableTaskEdit"
             android:exported="false" />
 
-<!--        <activity-->
-<!--            android:name=".timerActivity"-->
-<!--            android:exported="true" />-->
+        <!-- Add EventEditActivity declaration -->
+        <activity
+            android:name=".EventEditActivity"
+            android:exported="true" />
 
     </application>
 

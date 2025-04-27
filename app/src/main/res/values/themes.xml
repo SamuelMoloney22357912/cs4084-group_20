@@ -2,10 +2,12 @@
     <!-- Base application theme -->
     <style name="Theme.HelloWorld" parent="Theme.MaterialComponents.DayNight">
         <!-- Customize your theme here -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
         <item name="colorSecondary">@color/colorSecondary</item>
         <item name="colorOnSecondary">@color/colorOnSecondary</item>
+    </style>
+    <style name="CustomDateTextAppearance">
+        <item name="android:textColor">#FF0000</item> <!-- Set your custom text color -->
+        <item name="android:textSize">16sp</item> <!-- Set your custom text size -->
     </style>
 </resources>

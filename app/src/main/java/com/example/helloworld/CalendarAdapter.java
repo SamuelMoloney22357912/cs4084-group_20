@@ -3,92 +3,61 @@ package com.example.helloworld;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
-public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
+// In your CalendarAdapter.java
+public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
+    private List<Integer> daysInMonth;
+    private OnDayClickListener onDayClickListener;
 
-    private ArrayList<String> daysOfMonth;
-    private final OnItemListener onItemListener;
-    private LocalDate selectedDate;  // Store the selectedDate for comparison
-
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, LocalDate selectedDate) {
-        this.daysOfMonth = new ArrayList<>(daysOfMonth);
-        this.onItemListener = onItemListener;
-        this.selectedDate = selectedDate;  // Store selectedDate for later comparison
-    }
-
-    @NonNull
-    @Override
-    public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.calendar_cell, parent, false);
-        return new CalendarViewHolder(view, onItemListener);
+    // Modify the constructor to accept List<Integer>
+    public CalendarAdapter(List<Integer> daysInMonth, OnDayClickListener onDayClickListener) {
+        this.daysInMonth = daysInMonth;
+        this.onDayClickListener = onDayClickListener;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        String dayText = daysOfMonth.get(position);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.calendar_day_item, parent, false);
+        return new ViewHolder(view);
+    }
 
-        if (!dayText.isEmpty()) {
-            holder.dayOfMonth.setText(dayText);
-
-            if (dayText.equals(String.valueOf(selectedDate.getDayOfMonth()))
-                    && selectedDate.getMonthValue() == LocalDate.now().getMonthValue()
-                    && selectedDate.getYear() == LocalDate.now().getYear()) {
-                int highlightColor = ContextCompat.getColor(holder.itemView.getContext(), android.R.color.holo_purple);
-                holder.dayOfMonth.setBackgroundColor(highlightColor);
-                int highlightNumColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.white);
-                holder.dayOfMonth.setTextColor(highlightNumColor);
-
-            } else {
-                holder.dayOfMonth.setBackgroundResource(0); // Remove highlight
-            }
-
-            holder.dayOfMonth.setVisibility(View.VISIBLE);
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Integer day = daysInMonth.get(position);
+        if (day == 0) {
+            holder.dayButton.setVisibility(View.INVISIBLE); // Hide empty spaces
         } else {
-            holder.dayOfMonth.setVisibility(View.INVISIBLE);
+            holder.dayButton.setVisibility(View.VISIBLE);
+            holder.dayButton.setText(String.valueOf(day));
+            holder.dayButton.setOnClickListener(v -> onDayClickListener.onDayClick(position, String.valueOf(day)));
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return daysOfMonth.size();
+        return daysInMonth.size();
     }
 
-    public void updateData(ArrayList<String> newDays, LocalDate newSelectedDate) {
-        this.daysOfMonth = new ArrayList<>(newDays);
-        this.selectedDate = newSelectedDate;  // Update the selectedDate
-        notifyDataSetChanged();
+    public interface OnDayClickListener {
+        void onDayClick(int position, String dayText);
     }
 
-    public interface OnItemListener {
-        void onItemClick(int position, String dayText);
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        Button dayButton;
 
-    public static class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView dayOfMonth;
-        private final OnItemListener onItemListener;
-
-        public CalendarViewHolder(@NonNull View itemView, OnItemListener onItemListener) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            dayOfMonth = itemView.findViewById(R.id.cellDayText);
-            this.onItemListener = onItemListener;
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            String dayText = dayOfMonth.getText().toString();
-            if (!dayText.isEmpty()) {
-                onItemListener.onItemClick(getAdapterPosition(), dayText);
-            }
+            dayButton = itemView.findViewById(R.id.dayButton);
         }
     }
 }

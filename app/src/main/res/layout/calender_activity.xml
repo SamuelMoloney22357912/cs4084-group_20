@@ -1,28 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@android:color/holo_blue_bright"
-    android:gravity="center">
+    android:padding="16dp">
 
+    <!-- Top section with Month controls (your buttons and month text) -->
     <Space
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0" />
+        android:layout_height="50dp" />
 
-
-
-    <!-- Weekday Header (SUN, MON, TUE, WED, THU, FRI, SAT) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <!-- Previous Month Button -->
         <Button
             android:id="@+id/previousMonthButton"
             android:layout_width="wrap_content"
@@ -30,22 +22,20 @@
             android:backgroundTint="@android:color/holo_purple"
             android:text="←"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:contentDescription="Previous Month Button" />
 
-        <!-- Current Month Year TextView -->
         <TextView
             android:id="@+id/monthYearTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:padding="10dp"
             android:text="March 2025"
-            android:textColor="@android:color/black"
             android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <!-- Next Month Button -->
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:contentDescription="Current month and year" />
 
         <Button
             android:id="@+id/nextMonthButton"
@@ -54,10 +44,11 @@
             android:backgroundTint="@android:color/holo_purple"
             android:text="→"
             android:textColor="@android:color/white"
-            android:textSize="18sp" />
-
+            android:textSize="18sp"
+            android:contentDescription="Next Month Button" />
     </LinearLayout>
 
+    <!-- Days of the week row (SUN to SAT) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,111 +59,145 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SUN"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
+            android:text="Sun"
+            android:gravity="center"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="MON"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
+            android:text="Mon"
+            android:gravity="center"
+            android:textSize="14sp"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="TUE"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:text="Tue"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="WED"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:text="Wed"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="THU"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:text="Thu"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="FRI"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:text="Fri"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="SAT"
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:text="Sat"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewCalendar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
-
-
+    <!-- Calendar + Events split into two parts -->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_marginTop="10dp">
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/viewWeekly"
-            android:layout_width="123dp"
-            android:layout_height="63dp"
-            android:backgroundTint="@android:color/holo_purple"
-            android:gravity="center"
-            android:text="View Weekly Calendar"
-            android:textColor="@android:color/white"
-            android:textSize="12dp"
-            android:layout_marginEnd="10dp" />
+        <!-- Calendar Days -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:contentDescription="Calendar Days Recycler View" />
 
-        <Button
-            android:id="@+id/viewDaily"
-            android:layout_width="123dp"
-            android:layout_height="63dp"
-            android:backgroundTint="@android:color/holo_purple"
-            android:gravity="center"
-            android:text="View Daily Schedule"
-            android:textColor="@android:color/white"
-            android:textSize="12dp" />
+        <!-- Events List Section -->
+        <ScrollView
+            android:id="@+id/eventsScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#EEEEEE"
+            android:padding="8dp"
+            android:contentDescription="Events List ScrollView">
+
+            <LinearLayout
+                android:id="@+id/eventsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </ScrollView>
+
+        <!-- New Box for All Saved Events -->
+        <LinearLayout
+            android:id="@+id/allSavedEventsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="#D3D3D3"
+            android:visibility="gone"
+            android:contentDescription="All Saved Events Container">
+
+            <TextView
+                android:id="@+id/allSavedEventsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="All Saved Events"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:padding="8dp"
+                android:background="#C0C0C0"
+                android:textColor="@android:color/black"
+                android:contentDescription="Title for All Saved Events" />
+
+            <!-- Dynamic events will be added here in Java code -->
+            <LinearLayout
+                android:id="@+id/savedEventsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+        <!-- Static/Global Events -->
+        <LinearLayout
+            android:id="@+id/globalEventsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="#EEEEEE"
+            android:visibility="gone"
+            android:contentDescription="Global Events Container">
+            <!-- Dynamic events will be added here in Java code -->
+        </LinearLayout>
 
     </LinearLayout>
+
 </LinearLayout>
