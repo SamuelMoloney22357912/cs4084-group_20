@@ -3,7 +3,7 @@ package com.example.helloworld;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,8 +24,8 @@ public class CalendarActivity extends AppCompatActivity {
     private LinearLayout eventsContainer;
     private TextView monthYearTextView;
     private String monthYear;
-    private LinearLayout globalEventsContainer;  // Container for global events
-    private LinearLayout allSavedEventsContainer; // Container for all saved events
+    private LinearLayout globalEventsContainer;
+    private Button createEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +33,21 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.calender_activity);
 
         initWidgets();
-        selectedDate = LocalDate.now(); // Set default to the current date
+        selectedDate = LocalDate.now();
+        updateCalendarDays(); // Set default to the current date
         monthYear = CalendarUtils.formattedMonthYear(selectedDate);
         updateCalendarDays();  // Update the calendar days
-        updateEventsForSelectedDate();  // Display events for the current date
+        updateEventsForSelectedDate();
+        calendarAdapter = new CalendarAdapter(daysInMonth, this::onDayClicked);
+        calendarRecyclerView.setAdapter(calendarAdapter);// Display events for the current date
+    }
+    private void onDayClicked(int day) {
+        selectedDate = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), day);
+        String message = "Selected Date: " + day + " " + CalendarUtils.formattedMonthYear(selectedDate);
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+        // Update the events for the selected date
+        updateEventsForSelectedDate();
     }
 
     private void initWidgets() {
@@ -44,8 +55,15 @@ public class CalendarActivity extends AppCompatActivity {
         calendarRecyclerView.setLayoutManager(new GridLayoutManager(this, 7)); // 7 columns for days of the week
         eventsContainer = findViewById(R.id.eventsContainer);  // Initialize eventsContainer
         globalEventsContainer = findViewById(R.id.globalEventsContainer);  // Initialize global events container
-        allSavedEventsContainer = findViewById(R.id.allSavedEventsContainer); // Initialize all saved events container
         monthYearTextView = findViewById(R.id.monthYearTextView);
+        createEventButton = findViewById(R.id.createEventButton); // Initialize the create event button
+
+        // Set click listener for the Create Event button
+        createEventButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CalendarActivity.this, EventEditActivity.class);
+            intent.putExtra("SELECTED_DATE", selectedDate.toString()); // Pass the selected date to the event edit screen
+            startActivity(intent);
+        });
 
         // Add month navigation button functionality
         findViewById(R.id.previousMonthButton).setOnClickListener(v -> {
@@ -63,16 +81,16 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
+    private List<Integer> daysInMonth = new ArrayList<>();  // Declare this at the class level
+
     private void updateCalendarDays() {
+        daysInMonth.clear();  // Clear the list before adding new days to prevent duplication
         int firstDayOfMonth = selectedDate.withDayOfMonth(1).getDayOfWeek().getValue(); // 1 = Monday, 7 = Sunday
         int lengthOfMonth = selectedDate.lengthOfMonth(); // Days in the current month
 
-        // Create a list of the days to pass to the RecyclerView adapter
-        List<Integer> daysInMonth = new ArrayList<>();
-
         // Add empty spaces before the first day of the month
         for (int i = 1; i < firstDayOfMonth; i++) {
-            daysInMonth.add(0); // Adding empty space
+            daysInMonth.add(0);  // Adding empty space
         }
 
         // Add the actual days of the month
@@ -80,24 +98,12 @@ public class CalendarActivity extends AppCompatActivity {
             daysInMonth.add(day);
         }
 
-        // Pass this list to your RecyclerView Adapter
-        calendarAdapter = new CalendarAdapter(daysInMonth, this::onDayClicked);
-        calendarRecyclerView.setAdapter(calendarAdapter);
-        calendarAdapter.notifyDataSetChanged();
-    }
-
-    private void onDayClicked(int position, String dayText) {
-        if (!dayText.isEmpty()) {
-            selectedDate = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), Integer.parseInt(dayText));
-            String message = "Selected Date: " + dayText + " " + CalendarUtils.formattedMonthYear(selectedDate);
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-
-            // Open the EventEditActivity to add an event
-            Intent intent = new Intent(CalendarActivity.this, EventEditActivity.class);
-            intent.putExtra("SELECTED_DATE", selectedDate.toString()); // Pass the selected date
-            startActivity(intent);
-
-            updateEventsForSelectedDate(); // Update events for the selected date
+        // Now, update the RecyclerView with the new daysInMonth list
+        if (calendarAdapter == null) {
+            calendarAdapter = new CalendarAdapter(daysInMonth, this::onDayClicked);
+            calendarRecyclerView.setAdapter(calendarAdapter);
+        } else {
+            calendarAdapter.notifyDataSetChanged(); // Only call this once after updating the list
         }
     }
 
@@ -105,17 +111,12 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Reference to the container for events of the selected date
-        eventsContainer = findViewById(R.id.eventsContainer);
-        globalEventsContainer = findViewById(R.id.globalEventsContainer);
-        allSavedEventsContainer = findViewById(R.id.allSavedEventsContainer);
-
+        // Get the events for the selected date
         updateEventsForSelectedDate();
     }
 
-    // Update events for the selected date
     public void updateEventsForSelectedDate() {
-        // Get events for the selected date (Replace this with your event fetching mechanism)
+        // Get events for the selected date
         ArrayList<Event> eventsForSelectedDate = Event.eventsForDate(selectedDate);
 
         // Clear existing views (events)
@@ -132,13 +133,20 @@ public class CalendarActivity extends AppCompatActivity {
         } else {
             // Loop through the list of events for the selected date
             for (Event event : eventsForSelectedDate) {
+                // Create a new TextView for each event
                 TextView eventView = new TextView(this);
-                eventView.setText(event.getName() + " - " + CalendarUtils.formattedTime(event.getTime()));
+                String eventDetails = "Event: " + event.getName() +
+                        "\nPlace: " + event.getPlace() +
+                        "\nTime: " + CalendarUtils.formattedTime(event.getTime()) +
+                        "\nDifficulty: " + event.getDifficulty() +
+                        "\nPerson: " + event.getPerson();
+                eventView.setText(eventDetails);
                 eventView.setBackgroundResource(R.drawable.event_background);
                 eventView.setPadding(16, 16, 16, 16);
                 eventView.setTextColor(Color.BLACK);
-                eventView.setTextSize(16);
+                eventView.setTextSize(14);
 
+                // Set layout parameters to provide spacing between event views
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT
@@ -146,59 +154,13 @@ public class CalendarActivity extends AppCompatActivity {
                 params.setMargins(0, 0, 0, 16);
                 eventView.setLayoutParams(params);
 
+                // Add the event view to the events container
                 eventsContainer.addView(eventView);
             }
         }
 
-        // Handle visibility for global events (optional)
-        if (globalEventsContainer.getChildCount() == 0) {
-            globalEventsContainer.setVisibility(View.GONE);
-        } else {
-            globalEventsContainer.setVisibility(View.VISIBLE);
-        }
-
-        // Call to display events for all saved events in this month (optional)
-        updateSavedEventsForSelectedMonth();
-    }
-
-    private void updateSavedEventsForSelectedMonth() {
-        // Assuming you have a method that retrieves all events for a given month
-        List<Event> allEventsForMonth = Event.getAllEventsForMonth(selectedDate.getYear(), selectedDate.getMonthValue());
-
-        // Clear existing views (events)
-        allSavedEventsContainer.removeAllViews();
-
-        if (allEventsForMonth.isEmpty()) {
-            // If there are no saved events, show a message
-            TextView noSavedEventsText = new TextView(this);
-            noSavedEventsText.setText("No saved events for this month");
-            noSavedEventsText.setTextSize(16);
-            noSavedEventsText.setPadding(16, 16, 16, 16);
-            allSavedEventsContainer.addView(noSavedEventsText);
-        } else {
-            // Loop through the list of saved events for the selected month
-            for (Event event : allEventsForMonth) {
-                TextView eventView = new TextView(this);
-                eventView.setText(event.getName() + " - " + CalendarUtils.formattedTime(event.getTime()));
-                eventView.setBackgroundResource(R.drawable.event_background);
-                eventView.setPadding(16, 16, 16, 16);
-                eventView.setTextColor(Color.BLACK);
-                eventView.setTextSize(16);
-
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT
-                );
-                params.setMargins(0, 0, 0, 16);
-                eventView.setLayoutParams(params);
-
-                // Add the event view to the allSavedEventsContainer
-                allSavedEventsContainer.addView(eventView);
-            }
-        }
-
         // Optionally refresh the layout after adding new views
-        allSavedEventsContainer.requestLayout();
+        eventsContainer.requestLayout();
     }
 
 }

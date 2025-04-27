@@ -20,30 +20,30 @@ public class Event {
         return events;
     }
 
-    // Method to get events for a specific month and year
-    public static ArrayList<Event> getAllEventsForMonth(int year, int month) {
-        ArrayList<Event> eventsForMonth = new ArrayList<>();
-        for (Event event : eventsList) {
-            // Check if the event's year and month match the provided values
-            if (event.getDate().getYear() == year && event.getDate().getMonthValue() == month) {
-                eventsForMonth.add(event);
-            }
-        }
-        return eventsForMonth;
-    }
-
     private String name;
+    private String place;
     private LocalDate date;
     private LocalTime time;
+    private String difficulty;
+    private String person;
 
-    public Event(String name, LocalDate date, LocalTime time) {
+    // Constructor to initialize all fields
+    public Event(String name, String place, LocalDate date, LocalTime time, String difficulty, String person) {
         this.name = name;
+        this.place = place;
         this.date = date;
         this.time = time;
+        this.difficulty = difficulty;
+        this.person = person;
     }
 
+    // Getters for each field
     public String getName() {
         return name;
+    }
+
+    public String getPlace() {
+        return place;
     }
 
     public LocalDate getDate() {
@@ -52,5 +52,13 @@ public class Event {
 
     public LocalTime getTime() {
         return time;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public String getPerson() {
+        return person;
     }
 }

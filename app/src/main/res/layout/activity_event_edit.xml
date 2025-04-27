@@ -8,11 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0" />
-
     <EditText
         android:id="@+id/eventNameET"
         android:layout_width="match_parent"
@@ -28,16 +23,42 @@
         android:text="Event Date"
         android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/eventTimeTV"
+    <!-- TimePicker for selecting the time -->
+
+    <TimePicker
+        android:id="@+id/eventTimePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner" />
+
+    <EditText
+        android:id="@+id/eventPlaceET"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Event Time"
-        android:textSize="16sp" />
+        android:hint="Event Place"
+        android:textSize="16sp"
+        android:gravity="start"/>
+
+    <EditText
+        android:id="@+id/eventDifficultyET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Event Difficulty"
+        android:textSize="16sp"
+        android:gravity="start"/>
+
+    <EditText
+        android:id="@+id/eventPersonET"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Person Responsible"
+        android:textSize="16sp"
+        android:gravity="start"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="saveEventAction"
         android:text="Save Event" />
+
 </LinearLayout>
