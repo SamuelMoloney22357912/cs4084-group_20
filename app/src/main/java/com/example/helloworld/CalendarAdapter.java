@@ -14,15 +14,17 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     private List<Integer> daysList;
     private LocalDate selectedDate;
     private final OnDayClickListener onDayClickListener;
+    private final CalendarDatabase calendarDatabase; // Add a reference to CalendarDatabase
 
     public interface OnDayClickListener {
         void onDayClick(int position, String dayText);
     }
 
-    public CalendarAdapter(List<Integer> daysList, LocalDate selectedDate, OnDayClickListener listener) {
+    public CalendarAdapter(List<Integer> daysList, LocalDate selectedDate, OnDayClickListener listener, CalendarDatabase database) {
         this.daysList = daysList;
         this.selectedDate = selectedDate;
         this.onDayClickListener = listener;
+        this.calendarDatabase = database; // Initialize the database instance
     }
 
     public void setSelectedDate(LocalDate date) {
@@ -46,7 +48,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             holder.dayButton.setVisibility(View.VISIBLE);
 
             LocalDate currentDay = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), day);
-            boolean hasEvents = !Event.eventsForDate(currentDay).isEmpty();
+            boolean hasEvents = !calendarDatabase.getEventsForDate(currentDay).isEmpty(); // Query the database
 
             // Highlight the selected date with blue
             if (currentDay.equals(selectedDate)) {
@@ -78,7 +80,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             holder.dayButton.setVisibility(View.INVISIBLE);
         }
     }
-
 
     @Override
     public int getItemCount() {

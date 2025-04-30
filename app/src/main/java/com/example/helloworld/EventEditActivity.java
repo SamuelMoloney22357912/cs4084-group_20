@@ -17,6 +17,7 @@ public class EventEditActivity extends AppCompatActivity {
     private TextView eventDateTV;
     private TimePicker eventTimePicker;
     private LocalDate selectedDate;
+    private CalendarDatabase calendarDatabase; // Added instance of CalendarDatabase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,9 @@ public class EventEditActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_event_edit);
         initWidgets();
+
+        // Initialize the database
+        calendarDatabase = new CalendarDatabase(this);
 
         String selectedDateString = getIntent().getStringExtra("SELECTED_DATE");
         selectedDate = LocalDate.parse(selectedDateString);
@@ -40,17 +44,24 @@ public class EventEditActivity extends AppCompatActivity {
     }
 
     public void saveEventAction(View view) {
+        // Get event details from input fields
         String eventName = eventNameET.getText().toString();
         String eventPlace = eventPlaceET.getText().toString();
         String eventDifficulty = eventDifficultyET.getText().toString();
         String eventPerson = eventPersonET.getText().toString();
 
+        // Get event time from TimePicker
         int hour = eventTimePicker.getHour();
         int minute = eventTimePicker.getMinute();
         LocalTime eventTime = LocalTime.of(hour, minute);
 
+        // Create the event
         Event newEvent = new Event(eventName, eventPlace, selectedDate, eventTime, eventDifficulty, eventPerson);
-        Event.eventsList.add(newEvent);
+
+        // Save the event to the database
+        calendarDatabase.addEvent(newEvent);
+
+        // Finish the activity and return to the previous screen
         finish();
     }
 }

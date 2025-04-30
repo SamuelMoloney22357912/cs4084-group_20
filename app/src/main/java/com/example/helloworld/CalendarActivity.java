@@ -28,11 +28,16 @@ public class CalendarActivity extends AppCompatActivity {
     private Button createEventButton;
     private List<Integer> daysInMonth = new ArrayList<>();  // 🔥 moved here
 
+    private CalendarDatabase calendarDatabase; // Instance of the CalendarDatabase
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.calender_activity);
+
+        // Initialize the database
+        calendarDatabase = new CalendarDatabase(this);
 
         initWidgets();
 
@@ -54,7 +59,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         updateEventsForSelectedDate();
     }
-
 
     private void initWidgets() {
         calendarRecyclerView = findViewById(R.id.recyclerViewCalendar);
@@ -98,10 +102,9 @@ public class CalendarActivity extends AppCompatActivity {
             daysInMonth.add(day); // Add days of the month
         }
 
-        calendarAdapter = new CalendarAdapter(daysInMonth, selectedDate, this::onDayClicked);
+        calendarAdapter = new CalendarAdapter(daysInMonth, selectedDate, this::onDayClicked, calendarDatabase);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
-
 
     @Override
     protected void onResume() {
@@ -110,7 +113,8 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     public void updateEventsForSelectedDate() {
-        ArrayList<Event> eventsForSelectedDate = Event.eventsForDate(selectedDate);
+        // Use CalendarDatabase to get events for the selected date
+        ArrayList<Event> eventsForSelectedDate = calendarDatabase.getEventsForDate(selectedDate);
         eventsContainer.removeAllViews();
 
         if (eventsForSelectedDate.isEmpty()) {
@@ -147,8 +151,8 @@ public class CalendarActivity extends AppCompatActivity {
 
                 // Set up the delete button click listener to remove the event
                 deleteButton.setOnClickListener(v -> {
-                    // Delete the event
-                    Event.deleteEvent(event);
+                    // Delete the event from the database
+                    calendarDatabase.deleteEvent(event);
 
                     // Refresh the events for the selected date
                     updateEventsForSelectedDate();
@@ -164,5 +168,4 @@ public class CalendarActivity extends AppCompatActivity {
         }
         eventsContainer.requestLayout();
     }
-
 }
