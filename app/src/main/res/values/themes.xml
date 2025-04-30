@@ -10,4 +10,5 @@
         <item name="android:textColor">#FF0000</item> <!-- Set your custom text color -->
         <item name="android:textSize">16sp</item> <!-- Set your custom text size -->
     </style>
+
 </resources>

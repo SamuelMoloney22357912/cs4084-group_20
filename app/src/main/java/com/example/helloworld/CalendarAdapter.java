@@ -1,9 +1,15 @@
 package com.example.helloworld;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import java.time.LocalDate;
@@ -18,6 +24,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     public interface OnDayClickListener {
         void onDayClick(int position, String dayText);
+
+
+
     }
 
     public CalendarAdapter(List<Integer> daysList, LocalDate selectedDate, OnDayClickListener listener, CalendarDatabase database) {
@@ -50,26 +59,30 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             LocalDate currentDay = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), day);
             boolean hasEvents = !calendarDatabase.getEventsForDate(currentDay).isEmpty(); // Query the database
 
+            // Get the context for accessing color resources
+            Context context = holder.itemView.getContext();
+
             // Highlight the selected date with blue
             if (currentDay.equals(selectedDate)) {
                 holder.dayButton.setBackgroundTintList(
-                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_blue_dark));
+                        ContextCompat.getColorStateList(context, R.color.selected_day_background));
             }
-            // Highlight today's date with green, only if it's in the current month
+            // Highlight today's date with light blue
             else if (currentDay.equals(LocalDate.now()) && currentDay.getMonth().equals(LocalDate.now().getMonth())
                     && currentDay.getYear() == LocalDate.now().getYear()) {
                 holder.dayButton.setBackgroundTintList(
-                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_green_dark));
+                        ContextCompat.getColorStateList(context, R.color.today_background));
             }
-            // Highlight dates with events in red
+            // Highlight dates with events with very light blue
             else if (hasEvents) {
                 holder.dayButton.setBackgroundTintList(
-                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_red_dark));
+                        ContextCompat.getColorStateList(context, R.color.event_background));
             }
-            // Default background for other days
+            // Default background for other days with white and blue border
             else {
                 holder.dayButton.setBackgroundTintList(
-                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_purple));
+                        ContextCompat.getColorStateList(context, R.color.default_day_background));
+                holder.dayButton.setTextColor(ContextCompat.getColor(context, R.color.default_day_border)); // Blue border for text color
             }
 
             holder.dayButton.setOnClickListener(v -> {

@@ -1,13 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Top section with Month controls (your buttons and month text) -->
-    <Space
+    <!-- Top section with Month controls -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="wrap_content"
+        android:background="#6200EE"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <ImageButton
+            android:id="@+id/homeButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_view"
+            android:background="@android:color/transparent"
+            app:tint="#FFFFFF"
+            android:contentDescription="Home" />
+
+        <TextView
+            android:id="@+id/calendarTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="79dp"
+            android:layout_weight="1"
+            android:contentDescription="Calendar Title"
+            android:text="Calendar"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" /> <!-- Added margin to move title more to the left -->
+</LinearLayout>
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,47 +46,78 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/previousMonthButton"
-            android:layout_width="wrap_content"
+        <!-- Previous Month Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/holo_purple"
-            android:text="←"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:contentDescription="Previous Month Button" />
-
-        <TextView
-            android:id="@+id/monthYearTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="May 2025"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
+            android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:contentDescription="Current month and year" />
+            android:padding="8dp">
 
-        <Button
-            android:id="@+id/nextMonthButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@android:color/holo_purple"
-            android:text="→"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:contentDescription="Next Month Button" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:padding="8dp">
+
+                <!-- Previous Month Button -->
+                <ImageButton
+                    android:id="@+id/previousMonthButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/left"
+                    android:scaleType="centerInside"
+                    android:contentDescription="Go to previous month"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    tools:visibility="visible" />
+
+                <!-- Month and Year Text -->
+                <!-- Give more space to the text -->
+
+                <!-- Next Month Button -->
+                <TextView
+                    android:id="@+id/monthYearTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="-4dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="2"
+                    android:contentDescription="Current month and year"
+                    android:gravity="center"
+                    android:text="May 2025"
+                    android:textColor="@color/grey"
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/nextMonthButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/right"
+                    android:scaleType="centerInside"
+                    android:contentDescription="Go to next month"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    tools:visibility="visible" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
-    <!-- Days of the week row (SUN to SAT) -->
+    <!-- Days of the week row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
-
-
+        android:gravity="center"
+        android:layout_marginTop="8dp">
 
         <TextView
             android:layout_width="0dp"
@@ -110,6 +172,7 @@
             android:gravity="center"
             android:textSize="14sp"
             android:textStyle="bold" />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -120,11 +183,10 @@
             android:textStyle="bold" />
     </LinearLayout>
 
-    <!-- Calendar + Events split into two parts -->
+    <!-- Calendar and Events -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <!-- Calendar Days -->
@@ -133,79 +195,79 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
-            android:contentDescription="Calendar Days Recycler View" />
+            android:layout_margin="4dp"
+            android:contentDescription="Calendar Days Recycler View"
+            android:padding="8dp" />
 
         <!-- Events List Section -->
         <ScrollView
             android:id="@+id/eventsScrollView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="#EEEEEE"
-            android:padding="8dp"
-            android:contentDescription="Events List ScrollView">
+            android:layout_height="115dp"
+        android:layout_weight="1"
+            android:background="@drawable/rounded_background"        android:contentDescription="Events List ScrollView"
+        android:padding="8dp">
 
-            <LinearLayout
-                android:id="@+id/eventsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-        </ScrollView>
-        <Button
-            android:id="@+id/createEventButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Create Event"
-            android:layout_marginTop="16dp"/>
-
-
-        <!-- New Box for All Saved Events -->
         <LinearLayout
-            android:id="@+id/allSavedEventsContainer"
+            android:id="@+id/eventsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="8dp"
-            android:background="#D3D3D3"
-            android:visibility="gone"
-            android:contentDescription="All Saved Events Container">
+            android:padding="0dp" />
+    </ScrollView>
 
-            <TextView
-                android:id="@+id/allSavedEventsTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="All Saved Events"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:padding="8dp"
-                android:background="#C0C0C0"
-                android:textColor="@android:color/black"
-                android:contentDescription="Title for All Saved Events" />
+    <!-- Create Event Button -->
+    <Button
+        android:id="@+id/createEventButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Event"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center"
+        style="@style/RoundedButtonStyle"
+        android:contentDescription="Button to create a new event" />
 
-            <!-- Dynamic events will be added here in Java code -->
-            <LinearLayout
-                android:id="@+id/savedEventsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
 
-        </LinearLayout>
+        <!-- Saved Events -->
+    <LinearLayout
+        android:id="@+id/allSavedEventsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:background="@drawable/rounded_background"
+        android:contentDescription="All Saved Events Container">
 
-        <!-- Static/Global Events -->
-        <LinearLayout
-            android:id="@+id/globalEventsContainer"
+        <TextView
+            android:id="@+id/allSavedEventsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:text="All Saved Events"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
             android:padding="8dp"
-            android:background="#EEEEEE"
-            android:visibility="gone"
-            android:contentDescription="Global Events Container">
-            <!-- Dynamic events will be added here in Java code -->
-        </LinearLayout>
+            android:background="@drawable/rounded_background"            android:textColor="@android:color/black" />
 
+        <LinearLayout
+            android:id="@+id/savedEventsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounded_background"
+            android:orientation="vertical" />
     </LinearLayout>
 
+    <!-- Global Events -->
+    <LinearLayout
+        android:id="@+id/globalEventsContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone"
+        android:background="@drawable/rounded_background"
+        android:contentDescription="Global Events Container" />
 </LinearLayout>
+
+    </LinearLayout>

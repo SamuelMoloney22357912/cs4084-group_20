@@ -2,9 +2,14 @@ package com.example.helloworld;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +29,7 @@ public class CalendarActivity extends AppCompatActivity {
     private LinearLayout eventsContainer;
     private TextView monthYearTextView;
     private String monthYear;
+    private ImageButton homeButton;
     private LinearLayout globalEventsContainer;
     private Button createEventButton;
     private List<Integer> daysInMonth = new ArrayList<>();  // 🔥 moved here
@@ -35,6 +41,13 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.calender_activity);
+
+        homeButton = findViewById(R.id.homeButton);
+        homeButton.setOnClickListener(v -> {
+            Intent intent = new Intent(CalendarActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // optional: close current activity
+        });
 
         // Initialize the database
         calendarDatabase = new CalendarDatabase(this);
@@ -120,34 +133,45 @@ public class CalendarActivity extends AppCompatActivity {
         if (eventsForSelectedDate.isEmpty()) {
             TextView noEventsText = new TextView(this);
             noEventsText.setText("No events for this date");
-            noEventsText.setTextSize(16);
-            noEventsText.setPadding(16, 16, 16, 16);
+            noEventsText.setTextSize(18);
+            noEventsText.setPadding(18, 18, 18, 18);
             eventsContainer.addView(noEventsText);
         } else {
             for (Event event : eventsForSelectedDate) {
-                // Create a container to hold the event details and delete button
-                LinearLayout eventContainer = new LinearLayout(this);
-                eventContainer.setOrientation(LinearLayout.HORIZONTAL);
-                eventContainer.setPadding(16, 16, 16, 16);
+                // Parent vertical container to hold the full event
+                LinearLayout eventBox = new LinearLayout(this);
+                eventBox.setOrientation(LinearLayout.VERTICAL);
+                eventBox.setPadding(24, 24, 24, 24);
+                eventBox.setBackgroundResource(R.drawable.event_background);
+                eventBox.setLayoutParams(new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                ));
 
-                // Create a TextView to display the event details
+                // TextView for event details
                 TextView eventView = new TextView(this);
                 String eventDetails = "Event: " + event.getName() +
                         "\nPlace: " + event.getPlace() +
                         "\nTime: " + CalendarUtils.formattedTime(event.getTime()) +
-                        "\nDifficulty: " + event.getDifficulty() +
+                        "\nLocation: " + event.getDifficulty() +
                         "\nPerson: " + event.getPerson();
                 eventView.setText(eventDetails);
-                eventView.setBackgroundResource(R.drawable.event_background);
+                eventView.setTextSize(18);
                 eventView.setTextColor(Color.BLACK);
-                eventView.setTextSize(14);
 
-                // Create a delete button
+                // Delete button
                 Button deleteButton = new Button(this);
                 deleteButton.setText("Delete");
-                deleteButton.setBackgroundColor(Color.RED);
                 deleteButton.setTextColor(Color.WHITE);
-                deleteButton.setPadding(16, 8, 16, 8);
+                deleteButton.setBackgroundColor(Color.parseColor("#F28B82")); // Softer red
+                deleteButton.setBackground(getResources().getDrawable(R.drawable.rounded_button)); // optional if you have rounded background
+                LinearLayout.LayoutParams deleteParams = new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                deleteParams.gravity = Gravity.END;
+                deleteButton.setLayoutParams(deleteParams);
+                deleteButton.setPadding(32, 16, 32, 16);
 
                 // Set up the delete button click listener to remove the event
                 deleteButton.setOnClickListener(v -> {
@@ -158,14 +182,15 @@ public class CalendarActivity extends AppCompatActivity {
                     updateEventsForSelectedDate();
                 });
 
-                // Add the event view and delete button to the event container
-                eventContainer.addView(eventView);
-                eventContainer.addView(deleteButton);
+                // Add views to the event box
+                eventBox.addView(eventView);
+                eventBox.addView(deleteButton);
 
-                // Add the event container to the events container
-                eventsContainer.addView(eventContainer);
+                // Finally add to events container
+                eventsContainer.addView(eventBox);
             }
         }
         eventsContainer.requestLayout();
     }
+
 }
