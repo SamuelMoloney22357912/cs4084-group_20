@@ -20,6 +20,11 @@ public class Event {
         return events;
     }
 
+    // Method to delete an event
+    public static void deleteEvent(Event event) {
+        eventsList.remove(event); // Removes the event from the list
+    }
+
     private String name;
     private String place;
     private LocalDate date;
@@ -60,5 +65,10 @@ public class Event {
 
     public String getPerson() {
         return person;
+    }
+
+    // Method to add an event to the list
+    public static void addEvent(Event event) {
+        eventsList.add(event); // Adds the event to the static list
     }
 }

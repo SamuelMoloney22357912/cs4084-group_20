@@ -29,7 +29,7 @@
             android:id="@+id/monthYearTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="March 2025"
+            android:text="May 2025"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
@@ -55,14 +55,7 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Sun"
-            android:gravity="center"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+
 
         <TextView
             android:layout_width="0dp"
@@ -114,6 +107,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sat"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sun"
             android:gravity="center"
             android:textSize="14sp"
             android:textStyle="bold" />

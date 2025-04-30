@@ -1,77 +1,96 @@
 package com.example.helloworld;
 
-import static com.example.helloworld.CalendarUtils.selectedDate;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.time.LocalDate;
 import java.util.List;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
     private List<Integer> daysList;
-    private OnDayClickListener onDayClickListener;
+    private LocalDate selectedDate;
+    private final OnDayClickListener onDayClickListener;
 
-    // Constructor to accept days list and the listener
-    public CalendarAdapter(List<Integer> daysList, OnDayClickListener onDayClickListener) {
+    public interface OnDayClickListener {
+        void onDayClick(int position, String dayText);
+    }
+
+    public CalendarAdapter(List<Integer> daysList, LocalDate selectedDate, OnDayClickListener listener) {
         this.daysList = daysList;
-        this.onDayClickListener = onDayClickListener;
+        this.selectedDate = selectedDate;
+        this.onDayClickListener = listener;
     }
 
-    @NonNull
-    @Override
-    public CalendarViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.calendar_day_item, parent, false);
-        return new CalendarViewHolder(view);
+    public void setSelectedDate(LocalDate date) {
+        this.selectedDate = date;
+        notifyDataSetChanged(); // 🔥 Refresh to highlight selected day
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
-        // Get the day for this position in the list
-        int day = daysList.get(position);
+    public CalendarViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.calendar_day_item, parent, false);
+        return new CalendarViewHolder(itemView);
+    }
 
-        if (day == 0) {
-            // If it's an empty space (day == 0), hide the button
-            holder.dayButton.setVisibility(View.INVISIBLE);
-        } else {
-            // Otherwise, show the day and set the button text
-            holder.dayButton.setVisibility(View.VISIBLE);
+    @Override
+    public void onBindViewHolder(CalendarViewHolder holder, int position) {
+        Integer day = daysList.get(position);
+
+        if (day != null && day != 0) {
             holder.dayButton.setText(String.valueOf(day));
+            holder.dayButton.setVisibility(View.VISIBLE);
 
-            // Set an OnClickListener to handle day clicks
+            LocalDate currentDay = LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), day);
+            boolean hasEvents = !Event.eventsForDate(currentDay).isEmpty();
+
+            // Highlight the selected date with blue
+            if (currentDay.equals(selectedDate)) {
+                holder.dayButton.setBackgroundTintList(
+                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_blue_dark));
+            }
+            // Highlight today's date with green, only if it's in the current month
+            else if (currentDay.equals(LocalDate.now()) && currentDay.getMonth().equals(LocalDate.now().getMonth())
+                    && currentDay.getYear() == LocalDate.now().getYear()) {
+                holder.dayButton.setBackgroundTintList(
+                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_green_dark));
+            }
+            // Highlight dates with events in red
+            else if (hasEvents) {
+                holder.dayButton.setBackgroundTintList(
+                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_red_dark));
+            }
+            // Default background for other days
+            else {
+                holder.dayButton.setBackgroundTintList(
+                        ContextCompat.getColorStateList(holder.itemView.getContext(), android.R.color.holo_purple));
+            }
+
             holder.dayButton.setOnClickListener(v -> {
-                // Pass the selected day back to the activity
-                onDayClickListener.onDayClicked(day);
+                onDayClickListener.onDayClick(position, String.valueOf(day));
             });
+
+        } else {
+            holder.dayButton.setVisibility(View.INVISIBLE);
         }
     }
+
 
     @Override
     public int getItemCount() {
         return daysList.size();
     }
 
-    // ViewHolder for the calendar days
     public static class CalendarViewHolder extends RecyclerView.ViewHolder {
-
-        Button dayButton;  // Button for each calendar day
+        Button dayButton;
 
         public CalendarViewHolder(View itemView) {
             super(itemView);
-            dayButton = itemView.findViewById(R.id.dayButton);  // Reference to the Button
+            dayButton = itemView.findViewById(R.id.dayButton);
         }
-    }
-
-    // Interface to handle day click events
-    public interface OnDayClickListener {
-        void onDayClicked(int day);
     }
 }
