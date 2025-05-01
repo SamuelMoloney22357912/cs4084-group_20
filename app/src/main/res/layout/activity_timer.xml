@@ -1,21 +1,84 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".timerActivity">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@drawable/gradient_background">
+
+    <EditText
+        android:id="@+id/minutesInput"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter minutes"
+        android:inputType="number"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="@drawable/rounded_edittext"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="20dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Timer Page"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        />
+        android:text="00:00:00"
+        android:textColor="@android:color/black"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="20dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/finishMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🎉 Time Finished! Well done! 🎉"
+        android:textColor="#6A1B9A"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        android:visibility="gone"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp" />
+
+
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:text="Stop (Hold)"
+        android:background="@drawable/rounded_button_orange"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:enabled="false"
+        android:background="@drawable/rounded_button_grey"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp" />
+</LinearLayout>

@@ -7,8 +7,8 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:gravity="center_horizontal"
-    android:background="@color/white"
-    tools:context=".timetableTaskEdit">
+    android:background="@drawable/gradient_background">
+
 
     <TextView
         android:layout_width="match_parent"

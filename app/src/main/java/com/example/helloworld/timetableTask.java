@@ -77,7 +77,7 @@ public class timetableTask implements Comparable<timetableTask> {
         int c;
         switch (color) {
             case "Blue":
-                c = ResourcesCompat.getColor(context.getResources(), R.color.blue, null);
+                c = ResourcesCompat.getColor(context.getResources(), R.color.babyblue, null);
                 break;
             case "Green":
                 c = ResourcesCompat.getColor(context.getResources(), R.color.green, null);

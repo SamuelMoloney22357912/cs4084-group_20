@@ -34,14 +34,15 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_timer);
 
-       // timerTextView = findViewById(R.id.timerTextView);
-        //minutesInput = findViewById(R.id.minutesInput);
-        //startButton = findViewById(R.id.startButton);
-       // stopButton = findViewById(R.id.stopButton);
-        //resetButton = findViewById(R.id.resetButton);
-        //backButton = findViewById(R.id.backButton);
+        timerTextView = findViewById(R.id.timerTextView);
+        minutesInput = findViewById(R.id.minutesInput);
+        startButton = findViewById(R.id.startButton);
+        stopButton = findViewById(R.id.stopButton);
+        resetButton = findViewById(R.id.resetButton);
+        backButton = findViewById(R.id.backButton);
 
         timer = new Timer();
 
