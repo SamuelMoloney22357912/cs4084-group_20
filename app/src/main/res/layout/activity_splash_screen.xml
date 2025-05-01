@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:textSize="50sp"
         android:textStyle="bold"
+        android:text="Student Planner"
         android:textColor="@color/white"
         android:shadowColor="@color/black"
         android:shadowRadius="25"/>

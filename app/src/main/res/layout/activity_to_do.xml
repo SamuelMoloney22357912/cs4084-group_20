@@ -41,4 +41,14 @@
         android:src="@drawable/add"
         android:backgroundTint="@android:color/holo_blue_bright"/>
 
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="25dp"
+        android:textColor="@color/black"
+        android:backgroundTint="@android:color/holo_blue_bright"
+        android:text="Back" />
+
 </RelativeLayout>

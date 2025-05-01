@@ -31,6 +31,8 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.calender_activity);
+        getSupportActionBar().hide();
+
 
         initWidgets();
         selectedDate = LocalDate.now();

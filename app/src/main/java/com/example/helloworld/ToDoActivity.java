@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +59,12 @@ public class ToDoActivity extends AppCompatActivity implements ToDoOnDialogClose
         Collections.reverse(mList);
         adapter.setTasks(mList);
 
+        Button backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(ToDoActivity.this, MainActivity.class);
+            startActivity(intent);
+        });
 
 
 
