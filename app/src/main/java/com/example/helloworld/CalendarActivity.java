@@ -41,8 +41,6 @@ public class CalendarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.calender_activity);
-        getSupportActionBar().hide();
-
 
         homeButton = findViewById(R.id.homeButton);
         homeButton.setOnClickListener(v -> {
