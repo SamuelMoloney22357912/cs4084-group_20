@@ -8,27 +8,29 @@ import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class EventEditActivity extends AppCompatActivity {
 
     private EditText eventNameET, eventPlaceET, eventDifficultyET, eventPersonET;
     private TextView eventDateTV;
-    private TimePicker eventTimePicker; // Declare the TimePicker variable
-
+    private TimePicker eventTimePicker;
     private LocalDate selectedDate;
+    private CalendarDatabase calendarDatabase; // Added instance of CalendarDatabase
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_event_edit);
         initWidgets();
 
-        String selectedDateString = getIntent().getStringExtra("SELECTED_DATE");
-        selectedDate = LocalDate.parse(selectedDateString); // Parse the date
+        // Initialize the database
+        calendarDatabase = new CalendarDatabase(this);
 
-        // Display selected date in TextView
+        String selectedDateString = getIntent().getStringExtra("SELECTED_DATE");
+        selectedDate = LocalDate.parse(selectedDateString);
         eventDateTV.setText("Date: " + CalendarUtils.formattedDate(selectedDate));
     }
 
@@ -38,26 +40,28 @@ public class EventEditActivity extends AppCompatActivity {
         eventPlaceET = findViewById(R.id.eventPlaceET);
         eventDifficultyET = findViewById(R.id.eventDifficultyET);
         eventPersonET = findViewById(R.id.eventPersonET);
-        eventTimePicker = findViewById(R.id.eventTimePicker); // Initialize the TimePicker
+        eventTimePicker = findViewById(R.id.eventTimePicker);
     }
 
     public void saveEventAction(View view) {
-        // Get the data entered by the user
+        // Get event details from input fields
         String eventName = eventNameET.getText().toString();
         String eventPlace = eventPlaceET.getText().toString();
         String eventDifficulty = eventDifficultyET.getText().toString();
         String eventPerson = eventPersonET.getText().toString();
 
-        // Get the time from the TimePicker
+        // Get event time from TimePicker
         int hour = eventTimePicker.getHour();
         int minute = eventTimePicker.getMinute();
-        LocalTime eventTime = LocalTime.of(hour, minute); // Create a LocalTime object
+        LocalTime eventTime = LocalTime.of(hour, minute);
 
-        // Create a new Event object with the user input
+        // Create the event
         Event newEvent = new Event(eventName, eventPlace, selectedDate, eventTime, eventDifficulty, eventPerson);
-        Event.eventsList.add(newEvent);
 
-        // Optionally, navigate back or update the UI
-        finish(); // Close the activity after saving the event
+        // Save the event to the database
+        calendarDatabase.addEvent(newEvent);
+
+        // Finish the activity and return to the previous screen
+        finish();
     }
 }

@@ -6,20 +6,6 @@ import java.util.ArrayList;
 
 public class Event {
 
-    // Static list to store all events
-    public static ArrayList<Event> eventsList = new ArrayList<>();
-
-    // Method to get events for a specific date
-    public static ArrayList<Event> eventsForDate(LocalDate date) {
-        ArrayList<Event> events = new ArrayList<>();
-        for (Event event : eventsList) {
-            if (event.getDate().equals(date)) {
-                events.add(event);
-            }
-        }
-        return events;
-    }
-
     private String name;
     private String place;
     private LocalDate date;
@@ -60,5 +46,20 @@ public class Event {
 
     public String getPerson() {
         return person;
+    }
+
+    // Static method to get events for a specific date (using the database)
+    public static ArrayList<Event> getEventsForDate(LocalDate date, CalendarDatabase db) {
+        return db.getEventsForDate(date);  // Retrieve events from the database
+    }
+
+    // Static method to add an event (using the database)
+    public static void addEvent(Event event, CalendarDatabase db) {
+        db.addEvent(event); // Save event to the database
+    }
+
+    // Static method to delete an event (using the database)
+    public static void deleteEvent(Event event, CalendarDatabase db) {
+        db.deleteEvent(event); // Delete event from the database
     }
 }

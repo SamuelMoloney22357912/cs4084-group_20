@@ -1,25 +1,27 @@
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryVariant">#3700B3</color>
-    <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorSecondary">#03DAC6</color>
-    <color name="colorOnSecondary">#000000</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="red">#F44336</color>
-    <color name="green">#8BC34A</color>
-    <color name="blue">#0000FF</color> <!-- Standard Blue color -->
-    <color name="grey">#424141</color> <!-- You can define other colors like grey if needed -->
-    <color name="babyblue">#03A9F4</color> <!-- Standard Blue color -->
+    <!-- Base Colors -->
+    <color name="colorPrimary">#6200EE</color> <!-- Primary color (deep purple) -->
+    <color name="colorPrimaryVariant">#3700B3</color> <!-- Darker variant for primary color -->
+    <color name="colorOnPrimary">#FFFFFF</color> <!-- White text for primary background -->
+    <color name="colorSecondary">#03DAC6</color> <!-- Light teal accent color -->
+    <color name="colorOnSecondary">#000000</color> <!-- Black text for secondary background -->
+    <color name="black">#000000</color> <!-- Black color -->
+    <color name="white">#FFFFFF</color> <!-- White color -->
+    <color name="red">#F44336</color> <!-- Red color -->
+    <color name="green">#8BC34A</color> <!-- Green color -->
+    <color name="blue">#0000FF</color> <!-- Standard blue color -->
+    <color name="grey">#424141</color> <!-- Grey color -->
+    <color name="babyblue">#03A9F4</color> <!-- Baby blue color -->
+    <color name="rose">#E91E63</color> <!-- Rose color -->
+    <color name="orange">#FF9800</color> <!-- Orange color -->
+    <color name="purple">#9C27B0</color> <!-- Purple color -->
+    <color name="yellow">#FFEB3B</color> <!-- Yellow color -->
 
-    <color name="rose">#E91E63</color>
-
-
-    <color name="orange">#FF9800</color>
-
-    <color name="purple">#9C27B0</color>
-    <color name="yellow">#FFEB3B</color>
-
-    <color name="selected_day_background">#FFCC00</color>  <!-- Choose a color like yellow for selection -->
+    <!-- Calendar-specific colors -->
+    <color name="selected_day_background">#1E88E5</color>  <!-- Blue for selected day -->
+    <color name="today_background">#82B1FF</color>  <!-- Light Blue for today's date -->
+    <color name="event_background">#00BCD4</color>  <!-- Very Light Blue for dates with events -->
+    <color name="default_day_background">#FFFFFF</color>  <!-- White for regular days -->
+    <color name="default_day_border">#1E88E5</color>  <!-- Blue border for regular days -->
 
 </resources>

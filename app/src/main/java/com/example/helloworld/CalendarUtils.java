@@ -27,9 +27,20 @@ public class CalendarUtils {
         ArrayList<String> daysOfMonth = new ArrayList<>();
         LocalDate firstDayOfMonth = date.withDayOfMonth(1);
         int lengthOfMonth = firstDayOfMonth.lengthOfMonth();
+
+        // Get the day of the week for the first day of the month
+        int dayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1 = Monday, 7 = Sunday
+
+        // Add empty spaces for padding before the first day
+        for (int i = 0; i < dayOfWeek - 1; i++) {
+            daysOfMonth.add(""); // Empty space for padding
+        }
+
+        // Add the actual days of the month
         for (int i = 1; i <= lengthOfMonth; i++) {
             daysOfMonth.add(String.valueOf(i));
         }
+
         return daysOfMonth;
     }
 }
