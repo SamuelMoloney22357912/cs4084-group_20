@@ -28,7 +28,7 @@ import java.util.Collections;
 public class timetableActivity extends AppCompatActivity {
     //private LocalDate showedDate;
     private ArrayList<timetableTask> tasks;
-    private final DateTimeFormatter mainDate = DateTimeFormatter.ofPattern("EEEE dd/MM");
+
     private Database database;
     private TextView date;
     private ListAdapter listAdapter;
@@ -97,12 +97,7 @@ public class timetableActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        Button TTbackButton = findViewById(R.id.TTbackButton);
 
-        TTbackButton.setOnClickListener(v -> {
-            Intent intent = new Intent(timetableActivity.this, MainActivity.class);
-            startActivity(intent);
-        });
 
     }
 
