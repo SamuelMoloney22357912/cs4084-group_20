@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -93,6 +94,13 @@ public class timetableActivity extends AppCompatActivity {
             Intent intent = new Intent(timetableActivity.this, timetableTaskEdit.class);
             //intent.putExtra("Date", showedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             intent.putExtra("Date", currentDay.toString());
+            startActivity(intent);
+        });
+
+        Button TTbackButton = findViewById(R.id.TTbackButton);
+
+        TTbackButton.setOnClickListener(v -> {
+            Intent intent = new Intent(timetableActivity.this, MainActivity.class);
             startActivity(intent);
         });
 

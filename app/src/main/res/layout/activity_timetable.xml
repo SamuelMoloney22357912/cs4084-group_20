@@ -42,6 +42,18 @@
             android:scaleType="centerInside"
             android:src="@drawable/right" />
 
+        <Button
+            android:id="@+id/TTbackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:textColor="@color/black"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="25dp"
+            android:src="@drawable/add"
+            android:backgroundTint="@android:color/holo_blue_bright"
+            />
+
     </RelativeLayout>
 
     <ListView
