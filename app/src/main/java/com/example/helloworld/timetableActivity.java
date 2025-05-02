@@ -112,7 +112,10 @@ public class timetableActivity extends AppCompatActivity {
         date.setText(currentDay.toString().substring(0, 1) + currentDay.toString().substring(1).toLowerCase());
 
         //ArrayList<timetableTask> ts = database.getAllTasks(showedDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        ArrayList<timetableTask> ts = database.getAllTasks(currentDay.toString());
+        ArrayList<timetableTask> ts = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            ts = database.getAllTasks(currentDay.toString());
+        }
         Collections.sort(ts);
         tasks = ts;
         listAdapter.notifyDataSetChanged();
